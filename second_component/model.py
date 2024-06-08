@@ -148,7 +148,6 @@ class Call():
                 if variable.points_to in OWNER_CONST:
                     return variable.points_to
 
-            # This section is specifically for resolving namespace variables
             if isinstance(variable.points_to, Group) \
                and variable.points_to.group_type == GROUP_TYPE.NAMESPACE:
                 parts = self.owner_token.split('.')
@@ -185,9 +184,8 @@ class Node():
 
         self.uid = "node_" + os.urandom(4).hex()
 
-        # Assume it is a leaf and a trunk. These are modified later
-        self.is_leaf = True  # it calls nothing else
-        self.is_trunk = True  # nothing calls it
+        self.is_leaf = True 
+        self.is_trunk = True  
 
     def __repr__(self):
         return f"<Node token={self.token} parent={self.parent}>"
@@ -249,7 +247,6 @@ class Node():
         if line_number is None:
             ret = list(self.variables)
         else:
-            # TODO variables should be sorted by scope before line_number
             ret = list([v for v in self.variables if v.line_number <= line_number])
         if any(v.line_number for v in ret):
             ret.sort(key=lambda v: v.line_number, reverse=True)
@@ -266,13 +263,10 @@ class Node():
             if isinstance(variable.points_to, str):
                 variable.points_to = _resolve_str_variable(variable, file_groups)
             elif isinstance(variable.points_to, Call):
-                # else, this is a call variable
                 call = variable.points_to
-                # Only process Class(); Not a.Class()
                 if call.is_attr() and not call.definite_constructor:
                     continue
-                # Else, assume the call is a constructor.
-                # iterate through to find the right group
+
                 for file_group in file_groups:
                     for group in file_group.all_groups():
                         if group.token == call.token:
@@ -319,8 +313,7 @@ class Edge():
         self.node0 = node0
         self.node1 = node1
 
-        # When we draw the edge, we know the calling function is definitely not a leaf...
-        # and the called function is definitely not a trunk
+
         node0.is_leaf = False
         node1.is_trunk = False
 
