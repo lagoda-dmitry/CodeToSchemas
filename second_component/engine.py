@@ -524,7 +524,7 @@ def CodeToSchemas(raw_source_paths, output_file, language=None, hide_legend=True
         if not is_installed('dot') and not is_installed('dot.exe'):
             raise AssertionError(
                 "Can't generate a flowchart image because neither `dot` nor "
-                "`dot.exe` was found. Either install graphviz (see the README) "
+                "`dot.exe` was found. Either install graphviz"
                 "or, if you just want an intermediate text file, set your --output "
                 "file to use a supported text extension: %r" % set(TEXT_EXTENSIONS))
         final_img_filename = output_file
