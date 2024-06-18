@@ -170,7 +170,7 @@ class Python(BaseLanguage):
             class_group.add_node(Python.make_nodes(node_tree, parent=class_group)[0])
 
         for subgroup_tree in subgroup_trees:
-            logging.warning("Code2flow does not support nested classes. Skipping %r in %r.",
+            logging.warning("CodeToSchemas does not support nested classes. Skipping %r in %r.",
                             subgroup_tree.name, parent.token)
         return class_group
 
